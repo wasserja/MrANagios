@@ -5,7 +5,7 @@
    Get a list of all host problems from Nagios XI using Invoke-NagiosXiApi.
    All host problems are hosts in Nagios that are down, unreachable, or unknown.
 
-   All parameters have default values, but you should change your ApiUrl and ApiKey to match
+   All parameters have default values, but you should change your NagiosXiApiUrl and NagiosXiApiKey to match
    your environment. See the documentation for Invoke-NagiosXiApi.
 
 .EXAMPLE
@@ -72,8 +72,8 @@ function Get-NagiosXiAllHostProblems
     [Alias()]
     Param
     (
-        [string]$ApiUrl,
-        [string]$ApiKey,
+        [string]$NagiosXiApiUrl,
+        [string]$NagiosXiApiKey,
         [string]$Resource='objects/hoststatus',
         [string]$Method='Get',
         [string]$Query='current_state=in:1,2,3',
@@ -88,7 +88,7 @@ function Get-NagiosXiAllHostProblems
     {
         
         Write-Verbose 'Getting all Nagios XI host problems.'
-        $AllHostProblems = Invoke-NagiosXIApi -ApiUrl $ApiUrl -Resource $Resource -Method $Method -Query $Query -ApiKey $ApiKey
+        $AllHostProblems = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
             $AllHostProblems.hoststatuslist.hoststatus | Select-Object -Property name,status_text,last_check
             }

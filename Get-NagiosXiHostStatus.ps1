@@ -5,7 +5,7 @@
    Get a list of host status from Nagios XI using Invoke-NagiosXiApi.
    
 
-   All parameters have default values, but you should change your ApiUrl and ApiKey to match
+   All parameters have default values, but you should change your NagiosXiApiUrl and NagiosXiApiKey to match
    your environment. See the documentation for Invoke-NagiosXiApi.
 .PARAMETER HostName
    Provide the name of a monitored host. You can also provide multiple host names. Additionally
@@ -33,8 +33,8 @@ function Get-NagiosXiHostStatus
     [Alias()]
     Param
     (
-        [string]$ApiUrl,
-        [string]$ApiKey,
+        [string]$NagiosXiApiUrl,
+        [string]$NagiosXiApiKey,
         [string]$Resource='objects/hoststatus',
         [string]$Method='Get',
         [string[]]$HostName,
@@ -65,7 +65,7 @@ function Get-NagiosXiHostStatus
             $Query = $null
             }   
         Write-Verbose "Query $Query"
-        $HostStatus = Invoke-NagiosXIApi -ApiUrl $ApiUrl -Resource $Resource -Method $Method -Query $Query -ApiKey $ApiKey
+        $HostStatus = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
             $HostStatus.hoststatuslist.hoststatus | Select-Object -Property name,status_text,last_check
             }

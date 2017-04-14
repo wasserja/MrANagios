@@ -7,7 +7,7 @@
    have not been acknowledged on all servers including those that are up and not in a 
    scheduled down time.
 
-   All parameters have default values, but you should change your ApiUrl and ApiKey to match
+   All parameters have default values, but you should change your NagiosXiApiUrl and NagiosXiApiKey to match
    your environment. See the documentation for Invoke-NagiosXiApi.
 .PARAMETER Summary
    Provides a summary output of host, service, and status rather than all properties.
@@ -22,8 +22,8 @@ function Get-NagiosXiOpenServiceProblems
     [Alias()]
     Param
     (
-        [string]$ApiUrl,
-        [string]$ApiKey,
+        [string]$NagiosXiApiUrl,
+        [string]$NagiosXiApiKey,
         [switch]$Summary
     )
 
@@ -34,8 +34,8 @@ function Get-NagiosXiOpenServiceProblems
     Process
     {
         Write-Verbose 'Getting Nagios XI open service problems.'
-        $AllOpenServiceProblems = Get-NagiosXIAllOpenServiceProblems -ApiUrl $ApiUrl -ApiKey $ApiKey
-        $AllHostProblems = Get-NagiosXIAllHostProblems -ApiUrl $ApiUrl -ApiKey $ApiKey
+        $AllOpenServiceProblems = Get-NagiosXIAllOpenServiceProblems -NagiosXiApiUrl $NagiosXiApiUrl -NagiosXiApiKey $NagiosXiApiKey
+        $AllHostProblems = Get-NagiosXIAllHostProblems -NagiosXiApiUrl $NagiosXiApiUrl -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
             Write-Verbose 'Summary Output selected.'
             $AllOpenServiceProblems | where {$AllHostProblems.name -notcontains $_.host_name} | Select-Object -Property host_name,name,status_text
