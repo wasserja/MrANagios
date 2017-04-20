@@ -5,15 +5,17 @@
 # Change these values to match your environment.
 
 $Global:PSDefaultParameterValues["*:NagiosXiApiUrl"]="https://nagiosxi.domain.com/nagiosxi/api/v1/"
-$Global:PSDefaultParameterValues["*:NagiosXiApiKey"]="YourNagiosXiApiKeyHere"
+$Global:PSDefaultParameterValues["*:NagiosXiApiKey"]="PutYourAPIKeyHere"
 $Global:PSDefaultParameterValues["*:NagiosCoreUrl"]='https://nagiosxi.domain.com/nagios'
 
 # Optionally read nagios credentials from CliXml file on disk.
-$NagiosCredentialFile = 'C:\Scripts\NagiosLogon.xml'
+#requires -Modules MrACredential
+$NagiosCredentialFile = 'C:\Credentials\NagiosLogon.xml'
+$NagiosCredentialKey = 'C:\Keys\NagiosLogon.key'
 
-if (Test-Path $NagiosCredentialFile) {
-    Write-Verbose "$NagiosCredentialFile exists. Importing credential from file."
-    $Credential = Import-Clixml -Path $NagiosCredentialFile
+if ((Test-Path $NagiosCredentialFile) -and (Test-Path $NagiosCredentialKey)) {
+    Write-Verbose "Nagios credential file and key exists. Importing credential from file."
+    $Credential = Import-Credential -CredentialFilePath $NagiosCredentialFile -EncryptionKeyPath $NagiosCredentialKey
     $Global:PSDefaultParameterValues['*Nagios*:Credential']=$Credential
     }
 else {
