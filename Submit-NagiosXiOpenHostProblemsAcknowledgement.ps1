@@ -1,5 +1,5 @@
 ﻿<#
-.Synopsis
+.SYNOPSIS
    Acknowldge all open host problems in Nagios XI.
 .DESCRIPTION
    Get a list of open host problems from Nagios XI using Invoke-NagiosXiApi and then
@@ -16,8 +16,7 @@
 .EXAMPLE
    Submit-NagiosXiOpenHostProblemsAcknowledgement
 #>
-function Submit-NagiosXiOpenHostProblemsAcknowledgement
-{
+function Submit-NagiosXiOpenHostProblemsAcknowledgement {
     [CmdletBinding()]
     [Alias()]
     Param
@@ -28,12 +27,8 @@ function Submit-NagiosXiOpenHostProblemsAcknowledgement
         [string]$Comment = 'Acknowledged by Mr. Automaton.'
     )
 
-    Begin
-    {
-        
-    }
-    Process
-    {
+    Begin {}
+    Process {
         Write-Verbose 'Getting Nagios XI open host problems.'
         
         $OpenHostProblems = Get-NagiosXiOpenHostProblems -NagiosXiApiUrl $NagiosXiApiUrl -NagiosXiApiKey $NagiosXiApiKey
@@ -41,9 +36,7 @@ function Submit-NagiosXiOpenHostProblemsAcknowledgement
         foreach ($OpenHostProblem in $OpenHostProblems) {
             Write-Verbose -Message "Submitting Nagios acknowledgement for $($OpenHostProblem.name)"
             Submit-NagiosHostAcknowledgement -ComputerName $OpenHostProblem.name -comment $Comment -NagiosCoreUrl $NagiosCoreUrl
-            }
+        }
     }
-    End
-    {
-    }
+    End {}
 }

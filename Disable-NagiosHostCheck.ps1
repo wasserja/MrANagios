@@ -1,20 +1,22 @@
 ﻿<#
 .SYNOPSIS
-   Acknowledge Nagios Host problem for a specified host.
+   Disables Nagios Host checks for a specified host.
 
 .DESCRIPTION
    This function is a shortcut to Invoke-Nagios to automatically choose
-   to acknowledge nagios host problem for a specified host.
-.EXAMPLE
-   Submit-NagiosHostAcknowledgement -ComputerName SERVER01
+   to disable nagios checks for a specified host.
 
 .EXAMPLE
-   Submit-NagiosHostAcknowledgement -ComputerName SERVER01 -Credential $Credential
+   Disable-NagiosHostCheck -ComputerName SERVER01
 
 .EXAMPLE
-   Submit-NagiosHostAcknowledgement -ComputerName SERVER01 -Credential $Credential -NagiosCoreUrl https://nagiosdev.domain.com/nagios
+   Disable-NagiosHostCheck -ComputerName SERVER01 -Credential $Credential
+
+.EXAMPLE
+   Disable-NagiosHostCheck -ComputerName SERVER01 -Credential $Credential -NagiosCoreUrl https://nagiosdev.domain.com/nagios
+
 #>
-Function Submit-NagiosHostAcknowledgement {
+Function Disable-NagiosHostCheck {
     Param (
         # Nagios Host
         [Parameter(Mandatory = $true,
@@ -32,19 +34,18 @@ Function Submit-NagiosHostAcknowledgement {
         )]
         [string]$NagiosCoreUrl,
 
-        [Parameter(Mandatory = $false)]
-        [string]$Comment,
-
         # Nagios Credential
         [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]$Credential
         
     )
-    begin {}
+    begin {
+        
+    }
     process {
         foreach ($Computer in $ComputerName) {
-            Write-Verbose "Enabling Nagios Host Notifications for $Computer"
-            Invoke-NagiosRequest -ComputerName $Computer -action 33 -Credential $Credential -NagiosCoreUrl $NagiosCoreUrl -Comment $Comment
+            Write-Verbose "Disabling Nagios Host Checks for $Computer"
+            Invoke-NagiosRequest -ComputerName $Computer -action 16 -Credential $Credential -NagiosCoreUrl $NagiosCoreUrl
         }
     }
     end {}

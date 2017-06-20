@@ -1,92 +1,95 @@
 ﻿<#
-.Synopsis
-   This script allows the user execute cgi commands to a Nagios site by using
-   the Invoke-WebRequest cmdlet.
+.SYNOPSIS
+This script allows the user execute cgi commands to a Nagios site by using
+the Invoke-WebRequest cmdlet.
+
 .DESCRIPTION
-   The purpose of the script is to automate the process of disabling/enabling 
-   nagios notifications and/or checks for Nagios hosts and their services.
+The purpose of the script is to automate the process of disabling/enabling 
+nagios notifications and/or checks for Nagios hosts and their services.
    
-   The script utilizes Invoke-WebRequest to post to the nagios cmd.cgi. 
+The script utilizes Invoke-WebRequest to post to the nagios cmd.cgi. 
 
-   Paramaters: 
-        $computername - what nagios refers to as host for which you wish to
-        enable/disable checks and notifications. Hosts are case-sensitive.
+.PARAMETER ComputerName
+what nagios refers to as host for which you wish to
+enable/disable checks and notifications. Hosts are case-sensitive, but the 
+code actually changes the host to uppercase.
 
-        $action - integer of nagios cmd.cgi for the action you wish to take
+.PARAMETER Action
+Integer number of nagios cmd.cgi for the action you wish to take.
 
-            Disable checks of all services on this host
-            $action=16
+Disable checks of all services on this host
+$action=16
 
-            Enable checks of all services on this host
-            $action=15
+Enable checks of all services on this host
+$action=15
 
-            Disable notifications for all services on this host
-            $action=29
+Disable notifications for all services on this host
+$action=29
 
-            Enable notifications for all services on this host
-            $action=28
+Enable notifications for all services on this host
+$action=28
 
-            Acknowledge service problem
-            $action=34
+Acknowledge service problem
+$action=34
 
-            Force service check
-            $action=7
+Force service check
+$action=7
 
-        $NagiosCoreUrl - the base url of your nagios installation (i.e. http://nagios.domain.com/nagios)
+.PARAMETER NagiosCoreUrl
+The base url of your nagios installation (i.e. http://nagios.domain.com/nagios)
 
-        $username - the htaccess username
-
-        $password - the htaccess password
+.PARAMETER Credential
+Provide a PSCredential object containing a valid username and password to perform the requested action.
 
 .NOTES    
-    Author: Jason Wasser
-    Modified: 5/19/2015
-    Version: 1.8
-    Currently the script only supports enabling/disabling of active checks and
-    notifications.
-    
-    Changelog:
-    version 1.8
-        * Added Disable-NagiosServiceNotifications and Enable-NagiosServiceNotifications
-        * Added Disable-NagiosGlobalNotifications and Enable-NagiosGlobalNotifications
-    version 1.7
-        * Added logic for hostgroups and service groups
-    version 1.6
-        * Converted to Functions and script module
-    version 1.52
-        * Added host problem acknowledgement.
-    version 1.51
-        * Added logic for user not entering a password.
-    version 1.5
-        * Added service problem acknowledgement.
-        * Added force service check.
-        * Added disabling/enabling service checks for host groups
-        * Added disabling/enabling service checks for service groups.
-    version 1.0
-        * Initial re-write of Set-NagiosCLI.ps1 now using Invoke-WebRequest.
+Author: Jason Wasser @wasserja
+Modified: 6/20/2017
+Version: 1.9
+Currently the script only supports enabling/disabling of active checks and
+notifications.
 
-     
-    Future developments could include scheduled downtimes.
+Changelog:
+version 1.8
+    * Added Disable-NagiosServiceNotifications and Enable-NagiosServiceNotifications
+    * Added Disable-NagiosGlobalNotifications and Enable-NagiosGlobalNotifications
+version 1.7
+    * Added logic for hostgroups and service groups
+version 1.6
+    * Converted to Functions and script module
+version 1.52
+    * Added host problem acknowledgement.
+version 1.51
+    * Added logic for user not entering a password.
+version 1.5
+    * Added service problem acknowledgement.
+    * Added force service check.
+    * Added disabling/enabling service checks for host groups
+    * Added disabling/enabling service checks for service groups.
+version 1.0
+    * Initial re-write of Set-NagiosCLI.ps1 now using Invoke-WebRequest.
+
     
-    Known Issues:
-        * To run the script as a scheduled task as a service account will require running 
-        Internet Explorer once as the user.
+Future developments could include scheduled downtimes.
+
+Known Issues:
+    * To run the script as a scheduled task as a service account will require running 
+    Internet Explorer once as the user.
     
 .EXAMPLE
-   .\Invoke-NagiosRequest.ps1 -computername server1 -action 29 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
-   This will disable notifications for all services on host server1 including the host.
+Invoke-NagiosRequest.ps1 -computername server1 -action 29 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
+This will disable notifications for all services on host server1 including the host.
 .EXAMPLE
-   .\Invoke-NagiosRequest.ps1 -computername server1 -action 28 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
-   This will enable notifications for all services on host server1 including the host.
+Invoke-NagiosRequest.ps1 -computername server1 -action 28 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
+This will enable notifications for all services on host server1 including the host.
 .EXAMPLE
-   .\Invoke-NagiosRequest.ps1 -computername server1 -action 16 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
-   This will disable checks for all services on host server1 including the host.
+Invoke-NagiosRequest.ps1 -computername server1 -action 16 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
+This will disable checks for all services on host server1 including the host.
 .EXAMPLE
-   .\Invoke-NagiosRequest.ps1 -computername server1 -action 15 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
-   This will enable checks for all services on host server1 including the host.
+Invoke-NagiosRequest.ps1 -computername server1 -action 15 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
+This will enable checks for all services on host server1 including the host.
 .EXAMPLE
-   .\Invoke-NagiosRequest.ps1 -computername (get-content c:\temp\computerlist.txt) -action 29 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
-   This will disable notifications for a list of computers found in the c:\temp\computerlist.txt file.
+Invoke-NagiosRequest.ps1 -computername (get-content c:\temp\computerlist.txt) -action 29 -NagiosCoreUrl http://nagios.domain.com/nagios -username nagiosadmin
+This will disable notifications for a list of computers found in the c:\temp\computerlist.txt file.
 
 #>
 #requires -version 3.0
@@ -149,31 +152,27 @@ Function Invoke-NagiosRequest {
                 action=113
                 ")]
         [ValidateSet(7,11,12,15,16,22,23,28,29,33,34,67,68,113,114)]
-        [int]$action,
+        [int]$Action,
 
         [Parameter(Mandatory=$false)]
-        [string]$service,
+        [string]$Service,
 
         [Parameter(Mandatory=$false)]
-        [string]$servicegroup,
+        [string]$ServiceGroup,
 
         [Parameter(Mandatory=$false)]
-        [string]$comment,
+        [string]$Comment,
 
         [Parameter(Mandatory=$false)]
-        [string]$hostgroup,
+        [string]$HostGroup,
 
         # Nagios base url
         [Parameter(Mandatory=$false,Position=2,HelpMessage="The base url of your nagios installation (i.e. http://nagios.domain.com/nagios)")]
         [string]$NagiosCoreUrl,
 
-        # Nagios username
-        [Parameter(Mandatory=$false,Position=3)]
-        [string]$username,
-
-        # Nagios password
-        [Parameter(Mandatory=$false,Position=4)]
-        [string]$password
+        # Nagios Credential
+        [Parameter(Mandatory=$true)]
+        [System.Management.Automation.PSCredential]$Credential
 
     )
 
@@ -189,7 +188,7 @@ Function Invoke-NagiosRequest {
             $WebRequest = Invoke-WebRequest -Uri $uri -Credential $Credential -Body $formFields -Method POST -ContentType 'application/x-www-form-urlencoded'
         
             # If there was a problem with the hostname or other problem the errorMessage DIV field will be displayed. If not display the infoMessage of success.
-            $Message = $WebRequest.ParsedHtml.getElementsByTagName("div") | Where-Object "classname" -Match "errorMessage|infoMessage" | select -ExpandProperty innerText
+            $Message = $WebRequest.ParsedHtml.getElementsByTagName("div") | Where-Object "classname" -Match "errorMessage|infoMessage" | Select-Object -ExpandProperty innerText
             if ($Message) {
                 $Message 
                 }     
@@ -200,10 +199,6 @@ Function Invoke-NagiosRequest {
         $cgiurl="/cgi-bin/cmd.cgi"
         $uri = $NagiosCoreUrl + $cgiurl
         
-        # Credential verification
-        if (!$Credential) {
-            $Credential = Get-UserLogin -username $username -Password $password
-            }
     }
 
     Process

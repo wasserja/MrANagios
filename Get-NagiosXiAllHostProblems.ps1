@@ -1,15 +1,16 @@
 ﻿<#
-.Synopsis
-   Get a list of all host problems from Nagios XI.
-.DESCRIPTION
-   Get a list of all host problems from Nagios XI using Invoke-NagiosXiApi.
-   All host problems are hosts in Nagios that are down, unreachable, or unknown.
+.SYNOPSIS
+Get a list of all host problems from Nagios XI.
 
-   All parameters have default values, but you should change your NagiosXiApiUrl and NagiosXiApiKey to match
-   your environment. See the documentation for Invoke-NagiosXiApi.
+.DESCRIPTION
+Get a list of all host problems from Nagios XI using Invoke-NagiosXiApi.
+All host problems are hosts in Nagios that are down, unreachable, or unknown.
+
+All parameters have default values, but you should change your NagiosXiApiUrl and NagiosXiApiKey to match
+your environment. See the documentation for Invoke-NagiosXiApi.
 
 .EXAMPLE
-   Get-NagiosXiAllHostProblems
+Get-NagiosXiAllHostProblems
 
 @attributes                 : @{id=118527}
 instance_id                 : 1
@@ -66,38 +67,31 @@ scheduled_downtime_depth    : 0
 
 Returns a list of hosts that are down, unreachable, or unknown.
 #>
-function Get-NagiosXiAllHostProblems
-{
+function Get-NagiosXiAllHostProblems {
     [CmdletBinding()]
     [Alias()]
     Param
     (
         [string]$NagiosXiApiUrl,
         [string]$NagiosXiApiKey,
-        [string]$Resource='objects/hoststatus',
-        [string]$Method='Get',
-        [string]$Query='current_state=in:1,2,3',
+        [string]$Resource = 'objects/hoststatus',
+        [string]$Method = 'Get',
+        [string]$Query = 'current_state=in:1,2,3',
         [switch]$Summary
     )
 
-    Begin
-    {
-        
-    }
-    Process
-    {
+    Begin {}
+    Process {
         
         Write-Verbose 'Getting all Nagios XI host problems.'
         $AllHostProblems = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
-            $AllHostProblems.hoststatuslist.hoststatus | Select-Object -Property name,status_text,last_check
-            }
+            $AllHostProblems.hoststatuslist.hoststatus | Select-Object -Property name, status_text, last_check
+        }
         else {
             $AllHostProblems.hoststatuslist.hoststatus
-            }
+        }
         
     }
-    End
-    {
-    }
+    End {}
 }

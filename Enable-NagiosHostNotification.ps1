@@ -1,20 +1,21 @@
 ﻿<#
 .SYNOPSIS
-   Acknowledge Nagios Host problem for a specified host.
+Enables Nagios Host notifications for a specified host.
 
 .DESCRIPTION
-   This function is a shortcut to Invoke-Nagios to automatically choose
-   to acknowledge nagios host problem for a specified host.
-.EXAMPLE
-   Submit-NagiosHostAcknowledgement -ComputerName SERVER01
+This function is a shortcut to Invoke-Nagios to automatically choose
+to enable nagios notifications for a specified host.
 
 .EXAMPLE
-   Submit-NagiosHostAcknowledgement -ComputerName SERVER01 -Credential $Credential
+Enable-NagiosHostNotifications -ComputerName SERVER01
 
 .EXAMPLE
-   Submit-NagiosHostAcknowledgement -ComputerName SERVER01 -Credential $Credential -NagiosCoreUrl https://nagiosdev.domain.com/nagios
+Enable-NagiosHostNotifications -ComputerName SERVER01 -Credential $Credential
+
+.EXAMPLE
+Enable-NagiosHostNotifications -ComputerName SERVER01 -Credential $Credential -NagiosCoreUrl https://nagiosdev.domain.com/nagios
 #>
-Function Submit-NagiosHostAcknowledgement {
+Function Enable-NagiosHostNotification {
     Param (
         # Nagios Host
         [Parameter(Mandatory = $true,
@@ -32,19 +33,15 @@ Function Submit-NagiosHostAcknowledgement {
         )]
         [string]$NagiosCoreUrl,
 
-        [Parameter(Mandatory = $false)]
-        [string]$Comment,
-
         # Nagios Credential
         [Parameter(Mandatory = $true)]
         [System.Management.Automation.PSCredential]$Credential
-        
     )
     begin {}
     process {
         foreach ($Computer in $ComputerName) {
             Write-Verbose "Enabling Nagios Host Notifications for $Computer"
-            Invoke-NagiosRequest -ComputerName $Computer -action 33 -Credential $Credential -NagiosCoreUrl $NagiosCoreUrl -Comment $Comment
+            Invoke-NagiosRequest -ComputerName $Computer -Action 28 -Credential $Credential -NagiosCoreUrl $NagiosCoreUrl
         }
     }
     end {}
