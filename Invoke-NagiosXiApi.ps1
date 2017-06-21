@@ -19,14 +19,14 @@
    Created by: Jason Wasser @wasserja
    Modified: 4/11/2017 09:07:56 AM 
    Version 0.5
-.PARAMETER ApiUrl
+.PARAMETER NagiosXiApiUrl
     The Url of the Nagios XI API. Example: https://nagiosxi.domain.com/nagiosxi/api/v1/
-.PARAMETER ApiKey
+.PARAMETER NagiosXiApiKey
     Each Nagios XI user is generated a unique API key which can be used with the 
     API. Only API keys associated with admin accounts are allowed to perform system and 
     configuration actions. Read-only accounts can read object status.
 
-    It is recommended that you create a read-only account to pre-populate the ApiKey
+    It is recommended that you create a read-only account to pre-populate the NagiosXiApiKey
     default value in the MrANagios.psm1 script module.
 
 .PARAMETER Resource
@@ -57,7 +57,7 @@ servicestatuslist
 Return a list of all services and their status in JSON format.
 
 .EXAMPLE
-   Invoke-NagiosXiApi -ApiKey 'j2k35j123k5j1k351' -Query 'host_name=SERVER01'
+   Invoke-NagiosXiApi -NagiosXiApiKey 'j2k35j123k5j1k351' -Query 'host_name=SERVER01'
 
 servicestatuslist                                 
 -----------------                                 
@@ -91,8 +91,8 @@ function Invoke-NagiosXiApi
     [Alias()]
     Param
     (
-        [string]$ApiUrl,
-        [string]$ApiKey,
+        [string]$NagiosXiApiUrl,
+        [string]$NagiosXiApiKey,
         [string]$Resource='objects/host',
         [string]$Method='Get',
         [string]$Query
@@ -140,7 +140,7 @@ function Invoke-NagiosXiApi
     Process
     {
         Write-Verbose 'Invoking Nagios XI REST API'
-        $Uri = $ApiUrl+$Resource+'/?apikey='+$ApiKey+'&'+$Query
+        $Uri = $NagiosXiApiUrl+$Resource+'/?apikey='+$NagiosXiApiKey+'&'+$Query
         Write-Verbose "Uri $Uri"
         Invoke-RestMethod -Method $Method -Uri $Uri
     }

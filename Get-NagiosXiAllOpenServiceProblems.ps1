@@ -1,16 +1,16 @@
 ﻿<#
-.Synopsis
-   Get a list of all open service problems from Nagios XI.
+.SYNOPSIS
+Get a list of all open service problems from Nagios XI.
 .DESCRIPTION
-   Get a list of all open service problems from Nagios XI using Invoke-NagiosXiApi.
-   All open service problems are services in Nagios that are warning, critical, or unknown and that 
-   have not been acknowledged on all servers including those that are down, unreachable, or in 
-   scheduled down time.
+Get a list of all open service problems from Nagios XI using Invoke-NagiosXiApi.
+All open service problems are services in Nagios that are warning, critical, or unknown and that 
+have not been acknowledged on all servers including those that are down, unreachable, or in 
+scheduled down time.
 
-   All parameters have default values, but you should change your ApiUrl and ApiKey to match
-   your environment. See the documentation for Invoke-NagiosXiApi.
+All parameters have default values, but you should change your NagiosXiApiUrl and NagiosXiApiKey to match
+your environment. See the documentation for Invoke-NagiosXiApi.
 .EXAMPLE
-   Get-NagiosXiAllOpenServiceProblems
+Get-NagiosXiAllOpenServiceProblems
 
 @attributes                 : @{id=822571}
 instance_id                 : 1
@@ -71,38 +71,31 @@ active_checks_enabled       : 1
 
 Get the list of open service problems.
 #>
-function Get-NagiosXiAllOpenServiceProblems
-{
+function Get-NagiosXiAllOpenServiceProblems {
     [CmdletBinding()]
     [Alias()]
     Param
     (
-        [string]$ApiUrl,
-        [string]$ApiKey,
-        [string]$Resource='objects/servicestatus',
-        [string]$Method='Get',
-        [string]$Query='current_state=in:1,2,3&problem_acknowledged=0',
+        [string]$NagiosXiApiUrl,
+        [string]$NagiosXiApiKey,
+        [string]$Resource = 'objects/servicestatus',
+        [string]$Method = 'Get',
+        [string]$Query = 'current_state=in:1,2,3&problem_acknowledged=0',
         [switch]$Summary
     )
 
-    Begin
-    {
-        
-    }
-    Process
-    {
+    Begin {}
+    Process {
         
         Write-Verbose 'Getting all open Nagios XI service problems.'
-        $AllOpenServiceProblems = Invoke-NagiosXIApi -ApiUrl $ApiUrl -Resource $Resource -Method $Method -Query $Query -ApiKey $ApiKey
+        $AllOpenServiceProblems = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
             Write-Verbose 'Summary Output selected.'
-            $AllOpenServiceProblems.servicestatuslist.servicestatus| Select-Object -Property host_name,name,status_text
-            }
+            $AllOpenServiceProblems.servicestatuslist.servicestatus| Select-Object -Property host_name, name, status_text
+        }
         else {
             $AllOpenServiceProblems.servicestatuslist.servicestatus
-            }
+        }
     }
-    End
-    {
-    }
+    End {}
 }
