@@ -10,10 +10,10 @@ to enable nagios checks for a specified hostgroup.
 Enable-NagiosHostGroupCheck -HostGroup HostgroupName
 
 .EXAMPLE
-Enable-NagiosHostGroupCheck -HostGroup HostgroupName -username svcnagiosadmin -password Password!
+Enable-NagiosHostGroupCheck -HostGroup HostgroupName -Credential $Credential
 
 .EXAMPLE
-Enable-NagiosHostGroupCheck -HostGroup HostgroupName -username svcnagiosadmin -password Password! -NagiosCoreUrl https://nagiosdev.domain.com/nagios
+Enable-NagiosHostGroupCheck -HostGroup HostgroupName -Credential $Credential -NagiosCoreUrl https://nagiosdev.domain.com/nagios
 #>
 Function Enable-NagiosHostGroupCheck {
     Param (

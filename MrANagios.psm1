@@ -1,7 +1,7 @@
 ﻿# MrANagios Script Module
 
 
-# Set global default parameter values
+# Set default parameter values using global scope
 # Change these values to match your environment.
 
 $Global:PSDefaultParameterValues["*:NagiosXiApiUrl"]="https://nagiosxi.domain.com/nagiosxi/api/v1/"
