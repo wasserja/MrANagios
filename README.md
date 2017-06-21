@@ -3,6 +3,7 @@ Nagios PowerShell Module
 
 The Nagios PowerShell is a collection of functions to automate actions on Nagios XI and Nagios Core. 
 
+<pre>
 PS C:\> Get-Command -Module MrANagios
 
 CommandType     Name                                               Version    Source
@@ -32,3 +33,4 @@ Function        Submit-NagiosHostAcknowledgement                   1.3        Mr
 Function        Submit-NagiosServiceAcknowledgement                1.3        MrANagios
 Function        Submit-NagiosXiOpenHostProblemsAcknowledgement     1.3        MrANagios
 Function        Submit-NagiosXiOpenServiceProblemsAcknowledgement  1.3        MrANagios
+</pre>
