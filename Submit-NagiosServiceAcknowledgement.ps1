@@ -47,7 +47,7 @@ Function Submit-NagiosServiceAcknowledgement {
     process {
         foreach ($Computer in $ComputerName) {
             Write-Verbose "Submitting acknowledgement for $service on $Computer"
-            Invoke-NagiosRequest -ComputerName $Computer -action 34 -service $service -username $username -password $password -NagiosCoreUrl $NagiosCoreUrl -comment $comment
+            Invoke-NagiosRequest -ComputerName $Computer -action 34 -service $service -Credential $Credential -NagiosCoreUrl $NagiosCoreUrl -comment $comment
         }
     }
     end {}
