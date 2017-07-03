@@ -28,7 +28,11 @@ function Submit-NagiosXiOpenServiceProblemsAcknowledgement {
         [string]$NagiosXiApiKey,
         [string]$NagiosCoreUrl,
         #[string]$ServiceName='*', # Maybe later we can add filtering by service name and/or by host name
-        [string]$Comment = 'Acknowledged by Mr. Automaton.'
+        [string]$Comment = 'Acknowledged by Mr. Automaton.',
+        
+        # Nagios Credential
+        [Parameter(Mandatory = $true)]
+        [System.Management.Automation.PSCredential]$Credential
     )
 
     Begin {}
@@ -40,7 +44,7 @@ function Submit-NagiosXiOpenServiceProblemsAcknowledgement {
         
         foreach ($OpenServiceProblem in $OpenServiceProblems) {
             Write-Verbose -Message "Submitting Nagios acknowledgement for $($OpenServiceProblem.name) on $($OpenServiceProblem.host_name)"
-            Submit-NagiosServiceAcknowledgement -ComputerName $OpenServiceProblem.host_name -service $OpenServiceProblem.name -comment $Comment -NagiosCoreUrl $NagiosCoreUrl
+            Submit-NagiosServiceAcknowledgement -ComputerName $OpenServiceProblem.host_name -service $OpenServiceProblem.name -comment $Comment -NagiosCoreUrl $NagiosCoreUrl -Credential $Credential
         }
     }
     End {}

@@ -31,7 +31,7 @@ function Submit-NagiosXiOpenHostProblemsAcknowledgement {
     Process {
         Write-Verbose 'Getting Nagios XI open host problems.'
         
-        $OpenHostProblems = Get-NagiosXiOpenHostProblems -NagiosXiApiUrl $NagiosXiApiUrl -NagiosXiApiKey $NagiosXiApiKey
+        $OpenHostProblems = Get-NagiosXiOpenHostProblem -NagiosXiApiUrl $NagiosXiApiUrl -NagiosXiApiKey $NagiosXiApiKey
         
         foreach ($OpenHostProblem in $OpenHostProblems) {
             Write-Verbose -Message "Submitting Nagios acknowledgement for $($OpenHostProblem.name)"
