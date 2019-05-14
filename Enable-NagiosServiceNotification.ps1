@@ -49,7 +49,7 @@ Function Enable-NagiosServiceNotification {
     process {    
         foreach ($Computer in $ComputerName) {
             Write-Verbose "Disabling Nagios service Notifications for $Service on $Computer"
-            Invoke-NagiosRequest -ComputerName $Computer -Service $Service -action 22 -Credential $Credential -NagiosCoreUrl $url
+            Invoke-NagiosRequest -ComputerName $Computer -Service $Service -action 22 -Credential $Credential -NagiosCoreUrl $NagiosCoreUrl
         }
     }
     end {}
