@@ -90,10 +90,10 @@ function Get-NagiosXiAllServiceProblems {
         Write-Verbose 'Getting all Nagios XI service problems.'
         $AllServiceProblems = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
-            $AllServiceProblems.servicestatuslist.servicestatus | Select-Object -Property host_name, name, status_text
+            $AllServiceProblems.servicestatus | Select-Object -Property host_name, name, status_text
         }
         else {
-            $AllServiceProblems.servicestatuslist.servicestatus
+            $AllServiceProblems.servicestatus
         }
         
     }
