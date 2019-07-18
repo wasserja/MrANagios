@@ -110,10 +110,10 @@ function Get-NagiosXiServiceStatus {
         $ServiceStatus = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         
         if ($Summary) {
-            $ServiceStatus.servicestatuslist.servicestatus | Select-Object -Property host_name, name, status_text
+            $ServiceStatus.servicestatus | Select-Object -Property host_name, name, status_text
         }
         else {
-            $ServiceStatus.servicestatuslist.servicestatus
+            $ServiceStatus.servicestatus
         }
     }
     End {}

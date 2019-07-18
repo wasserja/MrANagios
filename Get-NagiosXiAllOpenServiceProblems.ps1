@@ -91,10 +91,10 @@ function Get-NagiosXiAllOpenServiceProblems {
         $AllOpenServiceProblems = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
             Write-Verbose 'Summary Output selected.'
-            $AllOpenServiceProblems.servicestatuslist.servicestatus| Select-Object -Property host_name, name, status_text
+            $AllOpenServiceProblems.servicestatus| Select-Object -Property host_name, name, status_text
         }
         else {
-            $AllOpenServiceProblems.servicestatuslist.servicestatus
+            $AllOpenServiceProblems.servicestatus
         }
     }
     End {}

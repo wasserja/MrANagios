@@ -68,10 +68,10 @@ function Get-NagiosXiHostStatus {
         Write-Verbose "Query $Query"
         $HostStatus = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
-            $HostStatus.hoststatuslist.hoststatus | Select-Object -Property name, status_text, last_check
+            $HostStatus.hoststatus | Select-Object -Property name, status_text, last_check
         }
         else {
-            $HostStatus.hoststatuslist.hoststatus
+            $HostStatus.hoststatus
         }
         
     }

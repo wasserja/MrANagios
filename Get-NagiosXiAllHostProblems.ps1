@@ -86,10 +86,10 @@ function Get-NagiosXiAllHostProblems {
         Write-Verbose 'Getting all Nagios XI host problems.'
         $AllHostProblems = Invoke-NagiosXIApi -NagiosXiApiUrl $NagiosXiApiUrl -Resource $Resource -Method $Method -Query $Query -NagiosXiApiKey $NagiosXiApiKey
         if ($Summary) {
-            $AllHostProblems.hoststatuslist.hoststatus | Select-Object -Property name, status_text, last_check
+            $AllHostProblems.hoststatus | Select-Object -Property name, status_text, last_check
         }
         else {
-            $AllHostProblems.hoststatuslist.hoststatus
+            $AllHostProblems.hoststatus
         }
         
     }
